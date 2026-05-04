@@ -1,1 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Simple 5-Page Website | Modern Frontend</title>
+    <!-- Google Fonts for clean typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navigation styling */
+        .navbar {
+            background: #ffffff;
+            backdrop-filter: blur(0px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 40px;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links li a i {
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .nav-links li a:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .nav-links li a.active {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .nav-links li a.active i {
+            color: white;
+        }
+
+        /* main content area */
+        .page-container {
+            flex: 1;
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 0 2rem 3rem;
+            width: 100%;
+        }
+
+        /* each page view (display on activation) */
+        .page {
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* card & content styling */
+        .hero {
+            background: linear-gradient(145deg, #ffffff, #f9f9ff);
+            border-radius: 2rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #eef2ff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1e293b, #2d3a5e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 1.8rem 0 1rem 0;
+            color: #0f172a;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+            border: 1px solid #e4e9f2;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1);
+            border-color: #cbd5e1;
+        }
+
+        .card i {
+            font-size: 2.2rem;
+            background: #eef2ff;
+            padding: 0.7rem;
+            border-radius: 1.2rem;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2563eb;
+            color: white;
+            padding: 0.65rem 1.4rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: scale(0.98);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.7rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #eef2ff;
+        }
+
+        .feature-list li i {
+            width: 24px;
+            color: #2563eb;
+        }
+
+        footer {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            padding: 1.8rem;
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: auto;
+        }
+
+        @media (max-width: 720px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            h1 {
+                font-size: 1.9rem;
+            }
+            .page-container {
+                padding: 0 1.2rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <i class="fas fa-globe"></i> SereneSpace
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#" data-page="home" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" data-page="about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#" data-page="services"><i class="fas fa-cogs"></i> Services</a></li>
+            <li><a href="#" data-page="portfolio"><i class="fas fa-images"></i> Portfolio</a></li>
+            <li><a href="#" data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="page-container">
+    <!-- PAGE 1: HOME -->
+    <div id="home" class="page active-page">
+        <div class="hero">
+            <h1><i class="fas fa-leaf"></i> Welcome to SereneSpace</h1>
+            <p style="font-size: 1.2rem; color: #334155; max-width: 700px;">Crafting digital experiences that feel like home — modern, elegant, and lightning fast. Explore our virtual space to learn more about what we do.</p>
+            <div style="margin-top: 1.8rem;">
+                <a href="#" class="btn" data-page="services"><i class="fas fa-arrow-right"></i> Explore Services</a>
+                <a href="#" class="btn btn-outline" data-page="contact" style="margin-left: 1rem;"><i class="fas fa-comment"></i> Get in touch</a>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <i class="fas fa-rocket"></i>
+                <h3>Fast & Reliable</h3>
+                <p>Optimized performance with modern architecture. Your users deserve speed.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-palette"></i>
+                <h3>Beautiful Design</h3>
+                <p>Pixel-perfect UI, cohesive branding, and delightful interactions.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-headset"></i>
+                <h3>24/7 Support</h3>
+                <p>Dedicated team ready to help at any hour. We care about your success.</p>
+            </div>
+        </div>
+
+        <div style="background: #eef2ff; border-radius: 1.5rem; padding: 1.8rem; margin-top: 1rem;">
+            <h3 style="margin: 0 0 0.5rem 0;">✨ Featured insight</h3>
+            <p style="margin-bottom: 0;">“Simplicity is the ultimate sophistication. We transform complex ideas into seamless digital journeys.”</p>
+        </div>
+    </div>
+
+    <!-- PAGE 2: ABOUT -->
+    <div id="about" class="page">
+        <h1><i class="fas fa-users"></i> About Us</h1>
+        <div class="hero">
+            <p style="font-size: 1.1rem;">We are a creative collective of designers, developers, and strategists who believe in the power of clean code and human-centered design. Founded in 2022, we’ve been shaping meaningful web experiences for startups, enterprises, and visionaries.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+            <div style="flex: 1; min-width: 200px;">
+                <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
+                <p>To craft digital tools that empower people and businesses, making technology accessible, inclusive, and lovely to use. We focus on sustainable web practices and long-term partnerships.</p>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+                <h2><i class="fas fa-eye"></i> Our Vision</h2>
+                <p>Build a future where every digital interaction inspires trust and delight. We strive to set new standards for frontend excellence and user empathy.</p>
+            </div>
+        </div>
+        <h2><i class="fas fa-chart-line"></i> Key Stats</h2>
+        <div class="card-grid">
+            <div class="card"><i class="fas fa-smile"></i> <h3>98%</h3><p>Client satisfaction rate</p></div>
+            <div class="card"><i class="fas fa-code-branch"></i> <h3>120+</h3><p>Projects completed</p></div>
+            <div class="card"><i class="fas fa-trophy"></i> <h3>15+</h3><p>Industry awards</p></div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: SERVICES -->
+    <div id="services" class="page">
+        <h1><i class="fas fa-cogs"></i> Our Services</h1>
+        <p style="font-size: 1.1rem; margin-bottom: 1.8rem; color: #334155;">Tailored solutions that drive engagement and deliver results — from concept to deployment.</p>
+        <div class="card-grid">
+            <div class="card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Web Development</h3>
+                <p>Responsive, accessible and modern websites. React, Vue, or vanilla — we deliver excellence.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile-First Design</h3>
+                <p>Fluid layouts and progressive web apps that perform flawlessly on any device.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-chart-simple"></i>
+                <h3>SEO & Analytics</h3>
+                <p>Boost your visibility, understand your audience with data-driven insights.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Cloud Integration</h3>
+                <p>Seamless APIs, serverless architectures, and fast hosting solutions.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-paintbrush"></i>
+                <h3>UI/UX Consulting</h3>
+                <p>Intuitive wireframes, user flows, and eye-catching interface design.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Security & Maintenance</h3>
+                <p>Regular updates, performance audits, and ironclad security practices.</p>
+            </div>
+        </div>
+        <div style="background: #f1f5f9; border-radius: 1.5rem; padding: 1.5rem; text-align: center;">
+            <i class="fas fa-handshake" style="font-size: 2rem; color: #2563eb;"></i>
+            <h3 style="margin: 0.5rem 0;">Need a custom package?</h3>
+            <p>We adapt to your business needs — contact us to discuss a personalized solution.</p>
+            <a href="#" class="btn" data-page="contact" style="margin-top: 0.8rem;"><i class="fas fa-calendar-check"></i> Let's talk</a>
+        </div>
+    </div>
+
+    <!-- PAGE 4: PORTFOLIO -->
+    <div id="portfolio" class="page">
+        <h1><i class="fas fa-images"></i> Our Work</h1>
+        <p style="margin-bottom: 1rem;">A glimpse of projects we've crafted with passion and precision. Each project tells a story of collaboration and innovation.</p>
+        <div class="card-grid">
+            <div class="card">
+                <i class="fas fa-store"></i>
+                <h3>UrbanMart E‑commerce</h3>
+                <p>Modern online store with smart filtering & seamless checkout. Boosted conversion by 34%.</p>
+                <span style="font-size: 0.8rem; color:#2563eb;">#React #Tailwind</span>
+            </div>
+            <div class="card">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>EduLearn Platform</h3>
+                <p>Interactive learning dashboard with video integration & progress tracker.</p>
+                <span style="font-size: 0.8rem; color:#2563eb;">#Vue #Node</span>
+            </div>
+            <div class="card">
+                <i class="fas fa-chart-line"></i>
+                <h3>FinDash Analytics</h3>
+                <p>Real-time financial dashboard for startups, with elegant data visualizations.</p>
+                <span style="font-size: 0.8rem; color:#2563eb;">#D3 #Express</span>
+            </div>
+            <div class="card">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Vitalis Health</h3>
+                <p>Clinic booking system and patient portal with secure messaging.</p>
+                <span style="font-size: 0.8rem; color:#2563eb;">#Next.js #Postgres</span>
+            </div>
+        </div>
+        <div class="hero" style="margin-top: 1rem; text-align: center;">
+            <i class="fas fa-star" style="color: #facc15;"></i> <i class="fas fa-star" style="color: #facc15;"></i> <i class="fas fa-star" style="color: #facc15;"></i>
+            <p style="margin-top: 0.8rem;"><strong>“Working with SereneSpace was an absolute pleasure — they turned our vision into reality beyond expectations!”</strong> — Jessica M., CEO of UrbanMart</p>
+        </div>
+    </div>
+
+    <!-- PAGE 5: CONTACT -->
+    <div id="contact" class="page">
+        <h1><i class="fas fa-envelope-open-text"></i> Contact Us</h1>
+        <div style="display: flex; flex-wrap: wrap; gap: 2.5rem; margin: 2rem 0;">
+            <div style="flex: 1.2; min-width: 240px;">
+                <div class="hero" style="margin-bottom: 0; padding: 1.8rem;">
+                    <h3><i class="fas fa-map-marker-alt"></i> Our Office</h3>
+                    <p>123 Serenity Lane, Suite 400<br>San Francisco, CA 94107</p>
+                    <hr style="margin: 1rem 0; border-color: #e2e8f0;">
+                    <p><i class="fas fa-phone-alt"></i> +1 (800) 456-7890</p>
+                    <p><i class="fas fa-envelope"></i> hello@serenespace.com</p>
+                    <div style="margin-top: 1rem; display: flex; gap: 14px;">
+                        <i class="fab fa-twitter" style="font-size: 1.5rem; color:#1e293b; cursor:pointer;"></i>
+                        <i class="fab fa-linkedin" style="font-size: 1.5rem; color:#1e293b; cursor:pointer;"></i>
+                        <i class="fab fa-github" style="font-size: 1.5rem; color:#1e293b; cursor:pointer;"></i>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 2; min-width: 260px;">
+                <div class="hero" style="padding: 1.8rem;">
+                    <h3><i class="fas fa-paper-plane"></i> Send a Message</h3>
+                    <form id="contactForm" style="display: flex; flex-direction: column; gap: 1.2rem;">
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <input type="text" placeholder="Your name" style="flex:1; padding: 0.8rem; border-radius: 60px; border: 1px solid #cbd5e1; font-family: inherit;" required>
+                            <input type="email" placeholder="Email address" style="flex:1; padding: 0.8rem; border-radius: 60px; border: 1px solid #cbd5e1; font-family: inherit;" required>
+                        </div>
+                        <textarea rows="4" placeholder="Tell us about your project or question..." style="padding: 0.8rem; border-radius: 1.5rem; border: 1px solid #cbd5e1; font-family: inherit;"></textarea>
+                        <button type="submit" class="btn" style="align-self: flex-start; border: none;"><i class="fas fa-paper-plane"></i> Submit Inquiry</button>
+                        <div id="formFeedback" style="font-size: 0.85rem; color: #16a34a;"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2025 SereneSpace — Clean, modern, 5-page website. All visions crafted with <i class="fas fa-heart" style="color: #ef4444;"></i> for the web.</p>
+</footer>
+
+<script>
+    (function() {
+        // Get page containers and nav links
+        const pages = {
+            home: document.getElementById('home'),
+            about: document.getElementById('about'),
+            services: document.getElementById('services'),
+            portfolio: document.getElementById('portfolio'),
+            contact: document.getElementById('contact')
+        };
+        
+        const navItems = document.querySelectorAll('.nav-links li a');
+        
+        // Function to switch active page based on pageId
+        function switchPage(pageId) {
+            // Deactivate all pages
+            Object.values(pages).forEach(page => {
+                if(page) page.classList.remove('active-page');
+            });
+            // Activate selected page
+            if(pages[pageId]) {
+                pages[pageId].classList.add('active-page');
+            } else {
+                // fallback
+                pages.home.classList.add('active-page');
+            }
+            
+            // Update active class on navigation links
+            navItems.forEach(link => {
+                const linkPage = link.getAttribute('data-page');
+                if(linkPage === pageId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // update browser URL hash without triggering scroll jump (optional)
+            window.location.hash = pageId;
+        }
+        
+        // Add click event to all navigation links
+        navItems.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                if(pageId && pages[pageId]) {
+                    switchPage(pageId);
+                }
+            });
+        });
+        
+        // Also handle clicks on any custom element that has data-page attribute (like buttons inside hero)
+        document.querySelectorAll('[data-page]').forEach(el => {
+            el.addEventListener('click', (e) => {
+                // avoid interfering if the click is inside a form submit etc
+                if(el.tagName === 'A' || el.classList.contains('btn')) {
+                    e.preventDefault();
+                }
+                const pageId = el.getAttribute('data-page');
+                if(pageId && pages[pageId]) {
+                    switchPage(pageId);
+                }
+            });
+        });
+        
+        // Route based on initial hash or default to home
+        function checkHash() {
+            let hash = window.location.hash.substring(1);
+            if(hash && pages[hash]) {
+                switchPage(hash);
+            } else {
+                switchPage('home');
+            }
+        }
+        
+        window.addEventListener('hashchange', checkHash);
+        checkHash();
+        
+        // Contact form simple frontend simulation (non-submit to actual backend, but shows demo feedback)
+        const contactForm = document.getElementById('contactForm');
+        if(contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const feedbackDiv = document.getElementById('formFeedback');
+                // simple validation demo
+                const nameInput = contactForm.querySelector('input[placeholder="Your name"]');
+                const emailInput = contactForm.querySelector('input[placeholder="Email address"]');
+                const messageArea = contactForm.querySelector('textarea');
+                if(nameInput.value.trim() === '' || emailInput.value.trim() === '' || messageArea.value.trim() === '') {
+                    feedbackDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please fill in all fields.';
+                    feedbackDiv.style.color = '#dc2626';
+                } else if (!emailInput.value.includes('@')) {
+                    feedbackDiv.innerHTML = '<i class="fas fa-envelope"></i> Please enter a valid email address.';
+                    feedbackDiv.style.color = '#dc2626';
+                } else {
+                    feedbackDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thanks! We\'ll get back to you soon. (Demo)';
+                    feedbackDiv.style.color = '#16a34a';
+                    contactForm.reset(); // optional reset
+                    setTimeout(() => {
+                        feedbackDiv.innerHTML = '';
+                    }, 4000);
+                }
+            });
+        }
+    })();
+</script>
+</body>
+</html>
